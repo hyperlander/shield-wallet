@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Shield Wallet</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="bg-shield-xlight min-h-screen">
+
+  <!-- Emergency exit -->
+  <div class="fixed top-3 right-3 z-50">
+    <button id="exit-btn" title="Leave immediately (Alt+X)"
+      class="bg-escape text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg hover:bg-red-700 transition-colors">
+      ✕ Exit
+    </button>
+  </div>
+
+  <div class="max-w-lg mx-auto px-4 py-12">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <p class="text-3xl mb-3">🛡️</p>
+      <h1 class="text-2xl font-black text-shield-deep tracking-tight">Shield Wallet</h1>
+      <p class="text-sm text-gray-500 mt-1">Private · One-time · No data saved</p>
+    </div>
+
+    <!-- Safety tip -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800 mb-8 text-center">
+      Open in <strong>Private / Incognito mode</strong> so it won't appear in your history.
+      Press <kbd class="bg-white border border-amber-300 rounded px-1 font-mono">Alt+X</kbd> to leave instantly.
+    </div>
+
+    <!-- Step 1: Seed input -->
+    <div id="view-seed" class="space-y-4">
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5">
+
+        <div>
+          <label class="text-xs font-black tracking-widest uppercase text-shield-deep block mb-2">
+            Paste your seed phrase
+          </label>
+          <textarea id="seed-input"
+            rows="4"
+            placeholder="Enter your 12 or 24 word seed phrase..."
+            class="w-full font-mono text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-shield-mid focus:border-transparent placeholder-gray-300"
+          ></textarea>
+          <p id="seed-error" class="text-red-600 text-xs mt-1 hidden"></p>
+        </div>
+
+        <button id="open-btn"
+          class="w-full bg-shield-deep text-white font-bold py-3 rounded-xl hover:bg-shield-mid transition-colors">
+          Open Wallet →
+        </button>
+
+        <div class="relative flex items-center">
+          <div class="flex-grow border-t border-gray-100"></div>
+          <span class="mx-3 text-xs text-gray-300 uppercase tracking-widest">or</span>
+          <div class="flex-grow border-t border-gray-100"></div>
+        </div>
+
+        <button id="generate-btn"
+          class="w-full border-2 border-shield-mid text-shield-mid font-bold py-3 rounded-xl hover:bg-shield-light transition-colors">
+          Generate new wallet
+        </button>
+      </div>
+
+      <p class="text-center text-xs text-gray-400">
+        Your seed phrase never leaves this device.
+      </p>
+    </div>
+
+    <!-- Step 2: Wallet view (hidden initially) -->
+    <div id="view-wallet" class="hidden space-y-4">
+
+      <!-- New mnemonic warning -->
+      <div id="new-wallet-warning" class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-5">
+        <p class="text-xs font-black uppercase tracking-widest text-amber-700 mb-2">Write this down now</p>
+        <p id="mnemonic-display" class="font-mono text-sm text-gray-800 leading-relaxed break-words"></p>
+        <p class="text-xs text-amber-700 mt-3">
+          Store these words somewhere safe — not on this device. This is the only way to recover your wallet.
+        </p>
+      </div>
+
+      <!-- Receive address -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+        <p class="text-xs font-black tracking-widest uppercase text-shield-deep">Your address</p>
+        <p class="text-xs text-gray-500">Share this address to receive ZEC privately.</p>
+
+        <!-- QR code -->
+        <div class="flex justify-center">
+          <canvas id="qr-canvas" class="rounded-xl"></canvas>
+        </div>
+
+        <!-- Address text -->
+        <div class="bg-gray-50 rounded-xl px-4 py-3 flex items-start gap-3">
+          <p id="address-display"
+            class="font-mono text-xs text-gray-700 break-all flex-1 leading-relaxed"></p>
+          <button id="copy-btn"
+            class="flex-shrink-0 text-shield-mid hover:text-shield-deep transition-colors text-xs font-bold mt-0.5">
+            Copy
+          </button>
+        </div>
+
+        <p id="copy-confirm" class="text-center text-xs text-shield-mid hidden">✓ Copied</p>
+      </div>
+
+      <!-- Close wallet -->
+      <button id="close-btn"
+        class="w-full border border-gray-200 text-gray-400 text-sm py-3 rounded-xl hover:border-gray-300 hover:text-gray-600 transition-colors">
+        Close wallet and clear all data
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="view-loading" class="hidden text-center py-10">
+      <div class="animate-spin text-4xl mb-4">⚙️</div>
+      <p class="text-gray-500 text-sm">Deriving address...</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="view-error" class="hidden bg-red-50 border border-red-200 rounded-2xl p-6 text-center">
+      <p class="text-red-700 font-bold mb-2">Something went wrong</p>
+      <p id="error-message" class="text-red-600 text-sm"></p>
+      <button id="error-retry-btn" class="mt-4 text-sm text-shield-mid underline">Try again</button>
+    </div>
+
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
